@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <cutils/android_reboot.h>
@@ -104,6 +105,17 @@ static void remount_ro(void)
 int android_reboot(int cmd, int flags, char *arg)
 {
     int ret;
+
+#ifdef RECOVERY_PRE_COMMAND
+    char *reason = "recovery";
+    if (cmd == (int) ANDROID_RB_RESTART2) {
+        if (!strcmp(arg,reason)) {
+            char cmd[PATH_MAX];
+            sprintf(cmd, RECOVERY_PRE_COMMAND " %s", arg);
+            system(cmd);
+        }
+    }
+#endif
 
     if (!(flags & ANDROID_RB_FLAG_NO_SYNC))
         sync();
