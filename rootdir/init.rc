@@ -309,7 +309,6 @@ on boot
 # Set this property so surfaceflinger is not started by system_init
     setprop system_init.startsurfaceflinger 0
 
-    class_start core
     start sysinit
 
 on nonencrypted
@@ -339,6 +338,7 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset main
 
 on property:eos.filesystem.ready=1
+    class_start core
     class_start main
 
 ## Daemon processes to be run by init.
