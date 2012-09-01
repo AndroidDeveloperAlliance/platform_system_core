@@ -309,7 +309,9 @@ on boot
 # Set this property so surfaceflinger is not started by system_init
     setprop system_init.startsurfaceflinger 0
 
-    start sysinit
+#    start sysinit
+    class_start core
+    class_start main
 
 on nonencrypted
     class_start late_start
@@ -337,9 +339,9 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
 
-on property:eos.filesystem.ready=1
-    class_start core
-    class_start main
+#on property:eos.filesystem.ready=1
+#   class_start core
+#    class_start main
 
 ## Daemon processes to be run by init.
 ##
@@ -488,6 +490,6 @@ service mdnsd /system/bin/mdnsd
     disabled
     oneshot
 
-service sysinit /system/bin/sysinit
-    disabled
-    oneshot
+#service sysinit /system/bin/sysinit
+#    disabled
+#    oneshot
